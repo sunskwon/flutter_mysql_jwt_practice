@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
 
 public class CustomAuthFailureHandler implements AuthenticationFailureHandler {
 
@@ -39,6 +41,17 @@ public class CustomAuthFailureHandler implements AuthenticationFailureHandler {
             failMsg = "관리자에게 문의해주세요.";
         }
 
-        
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("failType", failMsg);
+
+        jsonObject = new JSONObject(resultMap);
+
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+
+        out.println(jsonObject);
+        out.flush();
+        out.close();
     }
 }

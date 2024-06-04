@@ -1,7 +1,10 @@
 package com.nowhere.be.auth.filter;
 
+import com.nowhere.be.auth.model.DetailsUser;
 import com.nowhere.be.common.AuthConstants;
 import com.nowhere.be.common.utils.TokenUtils;
+import com.nowhere.be.user.model.dto.LoginUserDTO;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +35,14 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         if (header != null && !header.equalsIgnoreCase("")) {
             String token = TokenUtils.splitHeader(header);
+
+            if (TokenUtils.isValidToken(token)) {
+                Claims claims = TokenUtils.getClaimsFromToken(token);
+
+                DetailsUser authentication = new DetailsUser();
+                LoginUserDTO user = new LoginUserDTO();
+                user.setUserName(claims.get("userName").toString());
+            }
         }
     }
 }

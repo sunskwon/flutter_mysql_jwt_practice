@@ -2,7 +2,6 @@ package com.nowhere.be.auth.filter;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nowhere.be.auth.handler.CustomAuthenticationProvider;
 import com.nowhere.be.user.model.dto.LoginUserDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

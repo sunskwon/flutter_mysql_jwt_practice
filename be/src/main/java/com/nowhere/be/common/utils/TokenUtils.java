@@ -1,9 +1,7 @@
 package com.nowhere.be.common.utils;
 
 import com.nowhere.be.user.model.dto.LoginUserDTO;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +35,30 @@ public class TokenUtils {
         } else {
             return null;
         }
+    }
+
+    public static boolean isValidToken(String token) {
+
+        try {
+            Claims claims = getClaimsFromToken(token);
+            return true;
+        } catch (ExpiredJwtException e) {
+            e.printStackTrace();
+            return false;
+        } catch (JwtException e) {
+            e.printStackTrace();
+            return false;
+        } catch (NullPointerException e) {
+            return false;
+        }
+    }
+
+    public static Claims getClaimsFromToken(String token) {
+
+        return Jwts.parser()
+                .setSigningKey(DatatypeConverter.parseBase64Binary(jwtSecretKey))
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     public static String generateJwtToken(LoginUserDTO user) {
